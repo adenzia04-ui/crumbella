@@ -246,7 +246,6 @@
     waNumber.textContent = CONTACT.whatsappLabel || `+${CONTACT.whatsapp}`;
     waNumber.href = `https://wa.me/${CONTACT.whatsapp}`;
     $('#row-whatsapp').hidden = false;
-    $('.details > div:last-child').classList.add('details__wide'); // 7 items: let the last one fill its row
     waLink.hidden = false;
     copyBtn.hidden = true;
     $('#order-lead').textContent = 'Tell me what you need and when. The form writes a WhatsApp message for you; nothing is sent until you press send in WhatsApp.';
@@ -272,7 +271,7 @@
     buildMessage();
     preview.value = orderText;
     const done = () => {
-      statusNote.textContent = 'Copied. Paste it into a DM to @crumbella.byireen or @crumbellabyireen.';
+      statusNote.textContent = 'Copied. Paste it into a DM to @crumbellabyireen on TikTok.';
       statusNote.classList.add('is-done');
     };
     const fallback = () => {
