@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crumbella by Ireen</title>
+<meta name="description" content="Crumbella by Ireen: small-batch brownies and cookies, baked to order in Cheras, Kuala Lumpur, for cafés, offices, weddings and birthdays.">
+<meta name="theme-color" content="#0d0907">
+<link rel="icon" href="assets/emblem.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400..800;1,400..800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Loader: the oven preheats while the 3D scene is built -->
+<div class="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <p class="mono loader__label">Preheating the oven</p>
+    <p class="loader__temp"><span id="loader-temp">0</span><span class="loader__unit">°C</span></p>
+    <div class="loader__bar"><i></i></div>
+    <p class="mono loader__foot"><span>Crumbella by Ireen</span><span>Target 180°C</span></p>
+  </div>
+</div>
+
+<!-- Fixed 3D stage behind the page -->
+<div class="stage" aria-hidden="true">
+  <svg class="dial" id="dial" viewBox="-300 -300 600 600"></svg>
+  <canvas id="scene"></canvas>
+  <img class="stage__fallback" src="assets/cookie-split.webp" alt="">
+</div>
+
+<!-- Exploded-view annotations, positioned from the 3D scene -->
+<div class="anno" id="anno" aria-hidden="true">
+  <svg class="anno__svg"><path></path><path></path><path></path><path></path></svg>
+  <div class="anno__label"><span class="mono">A</span><b>Flaky sea salt</b><small>Pressed on by hand, after the bake</small></div>
+  <div class="anno__label"><span class="mono">B</span><b>70% dark chocolate</b><small>Chopped into chunks, never chips</small></div>
+  <div class="anno__label"><span class="mono">C</span><b>Brown-butter dough</b><small>Rested 36 hours in the cold</small></div>
+  <div class="anno__label"><span class="mono">D</span><b>Caramelised rim</b><small>11 minutes at 180°C</small></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" aria-label="Crumbella by Ireen, back to top">
+    <span class="nav__mark">Crumbella</span><em>by Ireen</em>
+  </a>
+  <!-- PREVIEW LABEL: delete this line once the client has paid -->
+  <span class="preview-badge mono" title="Preview version for client review">Preview</span>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#process" data-nav="process"><span class="mono">I</span>Process</a>
+    <a href="#work" data-nav="work"><span class="mono">II</span>Work</a>
+    <a href="#about" data-nav="about"><span class="mono">III</span>About</a>
+    <a href="#contact" data-nav="contact"><span class="mono">IV</span>Order</a>
+  </nav>
+  <div class="nav__meta">
+    <span class="mono nav__clock">KL <time id="kl-time">--:--:--</time></span>
+    <a class="btn btn--primary btn--sm nav__cta" href="#contact">Order a box</a>
+    <button class="nav__menu mono" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <nav aria-label="Mobile">
+    <a href="#process" data-nav="process"><span class="mono">I</span>Process</a>
+    <a href="#work" data-nav="work"><span class="mono">II</span>Work</a>
+    <a href="#about" data-nav="about"><span class="mono">III</span>About</a>
+    <a href="#contact" data-nav="contact"><span class="mono">IV</span>Order</a>
+  </nav>
+  <a class="btn btn--primary" href="#contact">Order a box</a>
+</div>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <p class="eyebrow hero__eyebrow" data-reveal>Brownies · Cookies · Desserts</p>
+    <h1 class="hero__title" id="hero-title" data-split>Crumbella <span class="hero__by">by Ireen</span></h1>
+    <div class="hero__body">
+      <p class="hero__line" data-reveal>Small-batch brownies and cookies, built with a watchmaker’s patience in Cheras, Kuala Lumpur.</p>
+      <div class="hero__ctas" data-reveal>
+        <a class="btn btn--primary" href="#contact">Order a box <span aria-hidden="true">→</span></a>
+        <a class="link" href="#work">See the work</a>
+      </div>
+    </div>
+    <div class="hero__foot mono" data-reveal>
+      <span class="hero__hint"><i></i>Scroll to break the cookie</span>
+      <span class="hero__coords">3.0965° N · 101.7461° E</span>
+      <span class="hero__status" id="oven-status">Baked to order, Tue–Sun</span>
+    </div>
+  </section>
+
+  <!-- PROCESS: pinned scrollytelling -->
+  <section class="process" id="process" aria-label="How a Crumbella cookie is made">
+    <div class="process__sticky">
+      <div class="process__steps">
+        <article class="step is-active" data-step="0">
+          <p class="eyebrow">Movement I · Anatomy</p>
+          <h2 class="step__title">Every cookie is a movement of <em>small parts.</em></h2>
+          <p class="step__body">Butter browned until it smells of toffee. Dough rested for a day and a half. Dark chocolate chopped by hand so it melts in pools, not dots. Each part has one job, and nothing is there for decoration.</p>
+          <dl class="step__specs">
+            <div><dt>Dough rest</dt><dd>36 h</dd></div>
+            <div><dt>Chocolate</dt><dd>70%</dd></div>
+            <div><dt>Weight</dt><dd>110 g</dd></div>
+          </dl>
+        </article>
+        <article class="step" data-step="1">
+          <p class="eyebrow">Movement II · The break</p>
+          <h2 class="step__title">The real test is <em>the snap.</em></h2>
+          <p class="step__body">A crisp, caramelised rim that gives way to a soft centre. When you pull it apart, the chocolate should stretch before it lets go. If a batch doesn’t do that, it doesn’t leave the kitchen.</p>
+          <dl class="step__specs">
+            <div><dt>Bake</dt><dd>11 min</dd></div>
+            <div><dt>Oven</dt><dd>180°C</dd></div>
+            <div><dt>Centre</dt><dd>Molten</dd></div>
+          </dl>
+        </article>
+        <article class="step" data-step="2">
+          <p class="eyebrow">Movement III · The brownie</p>
+          <h2 class="step__title">Then, something <em>darker.</em></h2>
+          <p class="step__body">Dense, fudgy and heavy for its size, with a paper-thin crackle on top that shatters under a fingertip. Made with more chocolate than flour, and baked a minute short on purpose.</p>
+          <dl class="step__specs">
+            <div><dt>Cocoa</dt><dd>70%</dd></div>
+            <div><dt>Top</dt><dd>Crackle</dd></div>
+            <div><dt>Texture</dt><dd>Fudge</dd></div>
+          </dl>
+        </article>
+        <article class="step" data-step="3">
+          <p class="eyebrow">Movement IV · The cut</p>
+          <h2 class="step__title">Nine squares <em>to a tray.</em></h2>
+          <p class="step__body">Cooled overnight, then cut with a hot knife so every edge is clean. Each square is weighed, wrapped and sealed by hand before it leaves Cheras.</p>
+          <dl class="step__specs">
+            <div><dt>Squares</dt><dd>9</dd></div>
+            <div><dt>Cool</dt><dd>12 h</dd></div>
+            <div><dt>Keeps</dt><dd>5 days</dd></div>
+          </dl>
+        </article>
+      </div>
+
+      <nav class="rail" aria-label="Process steps">
+        <button type="button" class="is-active" data-goto="0"><span class="mono">I</span><b>Anatomy</b></button>
+        <button type="button" data-goto="1"><span class="mono">II</span><b>The break</b></button>
+        <button type="button" data-goto="2"><span class="mono">III</span><b>The brownie</b></button>
+        <button type="button" data-goto="3"><span class="mono">IV</span><b>The cut</b></button>
+      </nav>
+
+      <p class="readout mono" aria-hidden="true">
+        <span id="readout-label">Exploded view</span>
+        <span class="readout__bar"><i id="readout-bar"></i></span>
+        <span id="readout-val">000</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- SELECTED WORK -->
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="work__head">
+      <p class="eyebrow" data-reveal>II · Selected work</p>
+      <h2 class="section-title" id="work-title" data-split>Orders, commissions <em>and collaborations.</em></h2>
+      <div class="work__aside" data-reveal>
+        <p>Who buys from Crumbella: cafés that want a signature bake, offices sending festive gifts, couples planning a dessert table, and people who simply want a very good box of cookies.</p>
+        <div class="filters" role="group" aria-label="Filter projects">
+          <button type="button" class="is-active" data-filter="all">All <span>06</span></button>
+          <button type="button" data-filter="cafe">Cafés <span>02</span></button>
+          <button type="button" data-filter="gifting">Gifting <span>02</span></button>
+          <button type="button" data-filter="celebration">Celebrations <span>02</span></button>
+        </div>
+      </div>
+    </div>
+
+    <ul class="grid">
+      <li class="card card--5" data-cat="cafe" data-reveal>
+        <div class="card__media" style="--ratio: 4 / 5">
+          <img src="assets/cookie-molten.webp" alt="A chocolate chunk cookie pulled apart, molten chocolate stretching between the halves" loading="lazy" width="1000" height="1243">
+        </div>
+        <div class="card__meta">
+          <span class="card__no mono">01</span>
+          <h3 class="card__title">The Molten Chunk</h3>
+          <span class="card__cat mono">Café wholesale</span>
+          <p class="card__client">Client · Kopi &amp; Kawan, Cheras</p>
+          <button type="button" class="card__order mono" data-order="Cookie box" data-title="The Molten Chunk">Order similar <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+
+      <li class="card card--7 card--drop" data-cat="cafe" data-reveal>
+        <div class="card__media" style="--ratio: 9 / 8">
+          <img src="assets/brownie-hand.webp" alt="A hand holding a square of fudgy brownie above a tray of cut brownies" loading="lazy" width="1100" height="1100">
+        </div>
+        <div class="card__meta">
+          <span class="card__no mono">02</span>
+          <h3 class="card__title">Midnight Fudge Squares</h3>
+          <span class="card__cat mono">Café wholesale</span>
+          <p class="card__client">Client · Rumah Teh, Taman Connaught</p>
+          <button type="button" class="card__order mono" data-order="Brownie box" data-title="Midnight Fudge Squares">Order similar <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+
+      <li class="card card--7" data-cat="gifting" data-reveal>
+        <div class="card__media" style="--ratio: 9 / 8">
+          <img src="assets/cookie-trio.webp" alt="Three chocolate chunk cookies, the front one broken open with melted chocolate" loading="lazy" width="1400" height="933">
+        </div>
+        <div class="card__meta">
+          <span class="card__no mono">03</span>
+          <h3 class="card__title">Hari Raya Gift Tins</h3>
+          <span class="card__cat mono">Corporate gifting</span>
+          <p class="card__client">Client · Meridian &amp; Co., 180 tins</p>
+          <button type="button" class="card__order mono" data-order="Corporate / bulk" data-title="Hari Raya Gift Tins">Order similar <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+
+      <li class="card card--5 card--drop" data-cat="celebration" data-reveal>
+        <div class="card__media card__media--cutout" style="--ratio: 4 / 5">
+          <img src="assets/cookie-split.webp" alt="A single chocolate chunk cookie split down the middle" loading="lazy" width="1200" height="962">
+        </div>
+        <div class="card__meta">
+          <span class="card__no mono">04</span>
+          <h3 class="card__title">The Wedding Favour</h3>
+          <span class="card__cat mono">Weddings</span>
+          <p class="card__client">Client · Aina &amp; Hafiz, 220 guests</p>
+          <button type="button" class="card__order mono" data-order="Wedding / event" data-title="The Wedding Favour">Order similar <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+
+      <li class="card card--6" data-cat="celebration" data-reveal>
+        <div class="card__media card__media--render" style="--ratio: 1 / 1">
+          <img data-render="dark" src="assets/cookie-split.webp" alt="A 3D render of a double dark chocolate cookie with white chocolate chunks, cracked open" loading="lazy" width="900" height="900">
+        </div>
+        <div class="card__meta">
+          <span class="card__no mono">05</span>
+          <h3 class="card__title">Double Dark Birthday Box</h3>
+          <span class="card__cat mono">Celebrations</span>
+          <p class="card__client">Client · Private order, Bandar Tun Hussein Onn</p>
+          <button type="button" class="card__order mono" data-order="Cookie box" data-title="Double Dark Birthday Box">Order similar <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+
+      <li class="card card--6 card--drop" data-cat="gifting" data-reveal>
+        <div class="card__media card__media--render" style="--ratio: 1 / 1">
+          <img data-render="pandan" src="assets/cookie-split.webp" alt="A 3D render of a pandan cookie with gula melaka chunks, cracked open" loading="lazy" width="900" height="900">
+        </div>
+        <div class="card__meta">
+          <span class="card__no mono">06</span>
+          <h3 class="card__title">Pandan Gula Melaka</h3>
+          <span class="card__cat mono">Corporate gifting</span>
+          <p class="card__client">Client · Studio Lantai, Merdeka week</p>
+          <button type="button" class="card__order mono" data-order="Corporate / bulk" data-title="Pandan Gula Melaka">Order similar <span aria-hidden="true">→</span></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <figure class="about__seal">
+      <img id="seal" src="assets/emblem.webp" alt="The Crumbella by Ireen emblem: Brownies, Cookies, Desserts. Little bites of happiness." width="640" height="640" loading="lazy">
+      <figcaption class="mono">The house seal · Little bites of happiness</figcaption>
+    </figure>
+
+    <div class="about__body">
+      <p class="eyebrow" data-reveal>III · About</p>
+      <h2 class="section-title" id="about-title" data-split>Ireen bakes in small batches, <em>by hand, in Cheras.</em></h2>
+      <div class="about__copy" data-reveal>
+        <p>Crumbella started in a home kitchen in Cheras with one cookie recipe and a lot of patience. Today Ireen bakes brownies and cookies for cafés, offices, weddings and anyone who thinks dessert deserves to be taken seriously.</p>
+        <p>Every batch is weighed to the gram, rested overnight and baked to order. Nothing waits on a shelf. When your box leaves the kitchen, it was in the oven that morning.</p>
+      </div>
+
+      <div class="clients" data-reveal>
+        <h3 class="mono clients__title">Who I bake for</h3>
+        <ul>
+          <li><b>Cafés &amp; coffee bars</b><span>Weekly wholesale trays, delivered across the Klang Valley.</span></li>
+          <li><b>Offices &amp; corporate gifting</b><span>Branded tins for Hari Raya, Chinese New Year, Deepavali and Christmas.</span></li>
+          <li><b>Weddings &amp; events</b><span>Favour boxes and dessert tables, from 50 guests up.</span></li>
+          <li><b>Birthdays &amp; just because</b><span>Boxes of 6, 12 or 24, baked the morning you collect.</span></li>
+        </ul>
+      </div>
+
+      <div class="spec" data-reveal>
+        <div class="spec__head mono"><span>Specification</span><span>House cookie · CB-01</span></div>
+        <dl>
+          <div><dt>Dough rest</dt><dd>24–36 hours, chilled</dd></div>
+          <div><dt>Bake</dt><dd>11 minutes at 180°C</dd></div>
+          <div><dt>Chocolate</dt><dd>70% dark, hand-chopped</dd></div>
+          <div><dt>Weight</dt><dd>110 g per cookie</dd></div>
+          <div><dt>Batch</dt><dd>24 pieces</dd></div>
+          <div><dt>Keeps</dt><dd>5 days, airtight</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="contact__inner">
+      <p class="eyebrow" data-reveal>IV · Order</p>
+      <h2 class="section-title contact__title" id="contact-title" data-split>Let’s bake something <em>worth breaking.</em></h2>
+      <p class="contact__lead" data-reveal id="order-lead">Tell me what you need and when. The form writes your order message for you. Copy it and send it to me as a DM on Instagram or TikTok.</p>
+
+      <form class="order" id="order" data-reveal novalidate>
+        <div class="field">
+          <label for="f-name" class="mono">Your name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Nur Aisyah">
+        </div>
+        <div class="field">
+          <label for="f-type" class="mono">What would you like?</label>
+          <select id="f-type" name="type">
+            <option>Cookie box</option>
+            <option>Brownie box</option>
+            <option>Mixed box</option>
+            <option>Corporate / bulk</option>
+            <option>Wedding / event</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-qty" class="mono">How many?</label>
+          <select id="f-qty" name="qty">
+            <option>Box of 6</option>
+            <option selected>Box of 12</option>
+            <option>Box of 24</option>
+            <option>50 or more</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-date" class="mono">Needed by</label>
+          <input id="f-date" name="date" type="date">
+        </div>
+        <div class="field field--wide">
+          <label for="f-notes" class="mono">Notes</label>
+          <textarea id="f-notes" name="notes" rows="3" placeholder="Occasion, flavours, delivery or pickup, allergies"></textarea>
+        </div>
+        <div class="order__actions field--wide">
+          <button class="btn btn--primary" id="order-copy" type="submit">Copy order message <span aria-hidden="true">→</span></button>
+          <a class="btn btn--primary" id="wa-link" href="#contact" target="_blank" rel="noopener" hidden>Send on WhatsApp <span aria-hidden="true">→</span></a>
+          <p class="order__note mono" id="order-status" role="status">Lead time 3 days · 2 weeks for corporate and festive orders</p>
+        </div>
+        <div class="field field--wide order__preview" id="order-preview-wrap" hidden>
+          <label for="order-preview" class="mono">Your message (select all and copy)</label>
+          <textarea id="order-preview" rows="5" readonly></textarea>
+        </div>
+      </form>
+
+      <dl class="details" data-reveal>
+        <div id="row-whatsapp" hidden><dt class="mono">WhatsApp</dt><dd><a class="link" id="wa-number" href="#contact" target="_blank" rel="noopener"></a></dd></div>
+        <div><dt class="mono">Instagram</dt><dd><a class="link" href="https://instagram.com/crumbella.byireen" target="_blank" rel="noopener">@crumbella.byireen</a></dd></div>
+        <div><dt class="mono">TikTok</dt><dd><a class="link" href="https://www.tiktok.com/@crumbellabyireen" target="_blank" rel="noopener">@crumbellabyireen</a></dd></div>
+        <div><dt class="mono">Email</dt><dd><a class="link" href="mailto:hello@crumbella.my">hello@crumbella.my</a></dd></div>
+        <div><dt class="mono">Pickup</dt><dd>Cheras, Kuala Lumpur. Exact address sent on confirmation.</dd></div>
+        <div><dt class="mono">Delivery</dt><dd>Klang Valley by Lalamove or Grab, at cost.</dd></div>
+        <div><dt class="mono">Hours</dt><dd>Tuesday to Sunday, 10:00–19:00</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>Brownies <i>·</i> Cookies <i>·</i> Desserts <i>·</i> <em>Little bites of happiness</em> <i>·</i></span>
+      <span>Brownies <i>·</i> Cookies <i>·</i> Desserts <i>·</i> <em>Little bites of happiness</em> <i>·</i></span>
+    </div>
+  </div>
+  <div class="footer__bar mono">
+    <span>© <span id="year">2026</span> Crumbella by Ireen</span>
+    <span>Cheras, Kuala Lumpur, Malaysia</span>
+    <a class="link" href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
