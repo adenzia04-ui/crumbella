@@ -8,8 +8,8 @@
   // Leave whatsapp empty to use "Copy order message". To switch to WhatsApp, fill both,
   // e.g. whatsapp: '60123456789' (country code, no "+" or spaces), whatsappLabel: '+60 12-345 6789'.
   const CONTACT = {
-    whatsapp: '',
-    whatsappLabel: '',
+    whatsapp: '923054979830',
+    whatsappLabel: '+92 305 4979830',
   };
   const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js';
   // -------------------------------------------------------------------------------
@@ -246,6 +246,7 @@
     waNumber.textContent = CONTACT.whatsappLabel || `+${CONTACT.whatsapp}`;
     waNumber.href = `https://wa.me/${CONTACT.whatsapp}`;
     $('#row-whatsapp').hidden = false;
+    $('.details > div:last-child').classList.add('details__wide'); // 7 items: let the last one fill its row
     waLink.hidden = false;
     copyBtn.hidden = true;
     $('#order-lead').textContent = 'Tell me what you need and when. The form writes a WhatsApp message for you; nothing is sent until you press send in WhatsApp.';

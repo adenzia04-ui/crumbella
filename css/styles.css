@@ -501,6 +501,7 @@ main { position: relative; z-index: 2; }
 .details { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
 .details div { padding: 1.1rem 1.2rem 1.1rem 0; display: grid; gap: .3rem; align-content: start; border-bottom: 1px solid var(--line); min-width: 0; }
 .details dt { color: var(--faint); font-size: .64rem; }
+.details .details__wide { grid-column: 1 / -1; }
 .details dd { margin: 0; font-size: .95rem; color: var(--text); overflow-wrap: anywhere; }
 
 /* ---------- Footer ---------- */
